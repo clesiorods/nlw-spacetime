@@ -28,6 +28,7 @@ export async function authRoutes(app: FastifyInstance) {
         );
 
         const { access_token } = accessTokenResponse.data;
+        // console.log('aaaaaaa', access_token);
 
         const userResponse = await axios.get('https://api.github.com/user', {
             headers: {
@@ -41,6 +42,7 @@ export async function authRoutes(app: FastifyInstance) {
             name: z.string(),
             avatar_url: z.string().url(),
         });
+        // console.log('dados retornados', userResponse.data);
 
         const userInfo = userSchema.parse(userResponse.data);
 
@@ -63,7 +65,7 @@ export async function authRoutes(app: FastifyInstance) {
 
         const token = app.jwt.sign({
             name: user.name,
-            avatar_url: user.avatarUrl,
+            avatarUrl: user.avatarUrl,
         }, {
             sub: user.id,
             expiresIn: '30 days'
